@@ -9,8 +9,8 @@ import { UserDetailsComponent } from './components/user-details/user-details.com
 
 const routes: Routes = [
   {path:'', redirectTo:'login', pathMatch:'full'},
-  {path:'login', component: LoginComponent},
-  {path:'dashboard', component: MainPageComponent },
+  {path: 'login', component: LoginComponent},
+  {path: 'dashboard', component: MainPageComponent },
   {path: 'users', component: UsersComponent},
   {path: 'user/:id', component: UserDetailsComponent },
   {path: 'my-page', component: AccountComponent },
