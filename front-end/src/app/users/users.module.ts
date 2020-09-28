@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UsersComponent } from './users/users.component';
 import { RouterModule, Routes } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 
 const routes: Routes = [
@@ -11,7 +12,8 @@ const routes: Routes = [
   declarations: [UsersComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild( routes)
+    RouterModule.forChild( routes),
+    HttpClientModule
   ]
 })
 export class UsersModule { }

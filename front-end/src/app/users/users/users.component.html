@@ -1,1 +1,43 @@
-<p>users works!</p>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link active" [routerLink] = "['/dashboard']">Dashboard </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" [routerLink] = "['/my-page']">My page</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" [routerLink] = "['/users']">Users</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" [routerLink] = "['/login']" style="color:black">Log out</a>
+                </li>
+              </ul>
+        </div>
+        <div class="col-md-8">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Created at</th>
+                    <th scope="col">Updated at</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr  *ngFor="let user of users">
+                    <th>{{user.id}}</th>
+                    <td>{{user.name}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.created_at | date:'yyyy/mm/dd'}}</td>
+                    <td>{{user.updated_at | date:'yyyy/mm/dd'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>
