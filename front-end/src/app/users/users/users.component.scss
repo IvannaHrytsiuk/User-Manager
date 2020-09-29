@@ -1,3 +1,18 @@
 .row{
     margin-top: 50px;
 }
+.newBtn{
+    text-align: end;
+    margin-bottom: 30px;
+}
+.ng-invalid:not(form).ng-touched{
+    border: 1px solid tomato;
+}
+.invalid{
+    color:tomato;
+    margin-bottom: 10px;
+}
+small{
+    color:tomato;
+    margin-bottom: 20px;
+}

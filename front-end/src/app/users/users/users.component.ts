@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Users } from 'src/app/shared/interfaces/users.interface';
+import { UserP } from 'src/app/shared/models/userShort.interface';
 import { UsersService } from 'src/app/shared/services/users.service';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-users',
@@ -9,12 +12,23 @@ import { UsersService } from 'src/app/shared/services/users.service';
 })
 export class UsersComponent implements OnInit {
   users:Array<Users> = [];
-  constructor( private usersServices: UsersService) { }
+  modalRef: BsModalRef;
+  newName:string  = '';
+  newEmail:string = '';
+  newPassword:string = '';
+  newUserForm:NgForm;
+  newUser:UserP = {
+    name:'',
+    email:'',
+    password:''
+  }
+  constructor( private usersServices: UsersService,
+    private modalService: BsModalService) { }
 
   ngOnInit(): void {
     this.getUsers();
   }
-  getUsers(): void{
+  private getUsers(): void{
     this.usersServices.getJSONUsers().subscribe(
       data => {
         this.users = data;
@@ -34,5 +48,23 @@ export class UsersComponent implements OnInit {
         console.log(err);
       }
     )    
+  }
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+  addUser():void{
+    this.usersServices.addJSONUser(this.newUser).subscribe(
+      () => {
+        this.getUsers();
+      }
+    )
+      this.resetNewUserForm();
+  }
+  resetNewUserForm():void{
+    this.newUser = {
+      name:'',
+      email:'',
+      password:''
+    }
   }
 }
