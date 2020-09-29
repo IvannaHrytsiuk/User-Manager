@@ -37,7 +37,7 @@
                                 [(ngModel)]="newUser.name" 
                                 required 
                                 #name='ngModel'
-                                pattern="^[a-z]{1,23}$"
+                                pattern="^[a-zA-Z]{1,23}$"
                                 name="newName">
                         </div>
                         <div *ngIf="name.invalid && name.touched">

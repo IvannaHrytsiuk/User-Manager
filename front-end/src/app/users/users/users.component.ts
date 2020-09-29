@@ -4,6 +4,8 @@ import { Users } from 'src/app/shared/interfaces/users.interface';
 import { UserP } from 'src/app/shared/models/userShort.interface';
 import { UsersService } from 'src/app/shared/services/users.service';
 import {NgForm} from '@angular/forms';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+
 
 @Component({
   selector: 'app-users',
@@ -23,7 +25,8 @@ export class UsersComponent implements OnInit {
     password:''
   }
   constructor( private usersServices: UsersService,
-    private modalService: BsModalService) { }
+    private modalService: BsModalService,
+    private notifyService : NotificationService){ }
 
   ngOnInit(): void {
     this.getUsers();
@@ -55,7 +58,11 @@ export class UsersComponent implements OnInit {
   addUser():void{
     this.usersServices.addJSONUser(this.newUser).subscribe(
       () => {
+        this.showToasterSuccess();
         this.getUsers();
+      },
+      err =>{
+        this.showToasterError();
       }
     )
       this.resetNewUserForm();
@@ -67,4 +74,11 @@ export class UsersComponent implements OnInit {
       password:''
     }
   }
+  showToasterSuccess(){
+    this.notifyService.showSuccess("New user successfully added :)")
+  }
+  showToasterError(){
+    this.notifyService.showError("Server not working. Please, try again later.")
+  }
 }
+
