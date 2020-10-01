@@ -1,32 +1,24 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http'; 
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component';
-import { MainPageComponent } from './components/main-page/main-page.component';
-import { UsersComponent } from './components/users/users.component';
-import { AccountComponent } from './components/account/account.component';
-import { UserDetailsComponent } from './components/user-details/user-details.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { HeaderComponent } from './components/header/header.component';
-
+import { HeaderComponent } from './component/header/header.component';
+import { FooterComponent } from './component/footer/footer.component';
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    MainPageComponent,
-    UsersComponent,
-    AccountComponent,
-    UserDetailsComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule
+    RouterModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
