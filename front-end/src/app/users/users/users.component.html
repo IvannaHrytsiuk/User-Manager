@@ -182,11 +182,35 @@
                     <td>{{user.email}}</td>
                     <td>{{user.createdAt | date:'yyyy/LL/dd'}}</td>
                     <td>{{user.updatedAt | date:'yyyy/LL/dd'}}</td>
-                    <td *ngIf="ifAdmin"><button class="btn btn-warning">Edit</button></td>
-                    <td *ngIf="ifAdmin"><button class="btn btn-danger">Delete</button></td>
+                    <td *ngIf="ifAdmin"><button class="btn btn-warning" (click)="openModalEdit(edit)">Edit</button></td>
+                    <ng-template #edit>
+                      <div class="modal-header">
+                        <h4 class="modal-title pull-left">Edit user </h4>
+                        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        This is a modal.
+                      </div>
+                    </ng-template>
+                    <td *ngIf="ifAdmin"><button class="btn btn-danger" (click)="openModalDel(del, user)">Delete</button></td>
+                    <ng-template #del>
+                      <div class="modal-header">
+                        <h4 class="modal-title pull-left" style="text-align: center;">Are you sure?</h4>
+                        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef3.hide()">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <button class="btn btn-danger" (click)="deleteUser()">Yes</button>
+                        <button class="btn btn-dark" (click)="modalRef3.hide()">No</button>
+                      </div>
+                    </ng-template>
                   </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+

@@ -5,6 +5,7 @@ import { UserP } from 'src/app/shared/models/userShort.interface';
 import { UsersService } from 'src/app/shared/services/users.service';
 import {NgForm} from '@angular/forms';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { User } from 'src/app/shared/models/users.model';
 
 
 @Component({
@@ -43,7 +44,9 @@ export class UsersComponent implements OnInit {
   }
   ifAdmin;
   ifUser;
-
+  modalRef2: BsModalRef;
+  modalRef3: BsModalRef;
+  removeuser:Users;
   constructor( private usersServices: UsersService,
     private modalService: BsModalService,
     private notifyService : NotificationService){ }
@@ -130,6 +133,27 @@ export class UsersComponent implements OnInit {
   showToasterError(){
     this.notifyService.showError("Server not working. Please, try again later.")
   }
+  openModalEdit(edit: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(edit);
+  }
   
+  openModalDel(del: TemplateRef<any>, user:Users) {
+    this.modalRef3 = this.modalService.show(del);
+    this.removeuser = user;
+    console.log(this.removeuser)
+  }
+  deleteUser():void{
+    this.usersServices.deleteJSONUser(this.removeuser.id).subscribe(
+      () =>{
+        this.notifyService.showSuccess("User successfully deleted!")
+        this.getUsers();
+      },
+      err => {
+        this.showToasterError();
+      }
+    );
+    this.removeuser = null;
+    this.modalRef3.hide();
+  }
 }
 

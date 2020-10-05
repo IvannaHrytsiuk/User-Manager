@@ -67,7 +67,7 @@ app.get('/users/:id', (req, res)=>{
 app.delete('/users/:id', (req, res)=>{
   mysqlConnection.query('DELETE FROM users WHERE id = ?',[req.params.id], (err, rows, fields)=>{
       if(!err){
-          res.send('Deleted!');
+          res.send({status:'Deleted!'});
       } else{
           console.log(err);
       }
