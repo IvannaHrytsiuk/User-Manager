@@ -66,7 +66,7 @@ CREATE TABLE `user_roles` (
 
 LOCK TABLES `user_roles` WRITE;
 /*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
-INSERT INTO `user_roles` VALUES ('2020-10-02 12:48:27','2020-10-02 12:48:27',1,2),('2020-10-02 12:52:19','2020-10-02 12:52:19',1,3),('2020-10-02 12:52:39','2020-10-02 12:52:39',1,4),('2020-10-02 12:47:52','2020-10-02 12:47:52',2,1);
+INSERT INTO `user_roles` VALUES ('2020-10-02 12:48:27','2020-10-02 12:48:27',1,2),('2020-10-02 12:52:19','2020-10-02 12:52:19',1,3),('2020-10-02 12:52:39','2020-10-02 12:52:39',1,4),('2020-10-05 07:00:24','2020-10-05 07:00:24',1,5),('2020-10-02 12:47:52','2020-10-02 12:47:52',2,1);
 /*!40000 ALTER TABLE `user_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,7 +86,7 @@ CREATE TABLE `users` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,7 +95,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin','admin','admin@gmail.com','$2a$08$.LbE2oex7f9M6Oj7kuVvEefy1rGwO1YYQlFLW7dumXYVlvLkEiDkW','2020-10-02 12:47:52','2020-10-02 12:47:52'),(2,'ivan','ivanov','ii@gmail.com','$2a$08$/uFbBBlGHx311w6yX77ose6.G8eAJ0Vgvx4JIYEYnDj/.7Pg6vvIK','2020-10-02 12:48:27','2020-10-02 12:48:27'),(3,'petro','petro','pp@gmail.com','$2a$08$vmCoLi4rs8kURHKnphvae.KuvpIp3gnJdClQ47DUBCIRdRSylXQ/S','2020-10-02 12:52:19','2020-10-02 12:52:19'),(4,'iryna','iryna','ira@gmail.com','$2a$08$ry2nHaw4vDRuHRiLwkx34usmYJDUQctEVE/L0IjM0UPNxdUjpSn9u','2020-10-02 12:52:39','2020-10-02 12:52:39');
+INSERT INTO `users` VALUES (1,'admin','admin','admin@gmail.com','$2a$08$.LbE2oex7f9M6Oj7kuVvEefy1rGwO1YYQlFLW7dumXYVlvLkEiDkW','2020-10-02 12:47:52','2020-10-02 12:47:52'),(2,'ivan','ivanov','ii@gmail.com','$2a$08$/uFbBBlGHx311w6yX77ose6.G8eAJ0Vgvx4JIYEYnDj/.7Pg6vvIK','2020-10-02 12:48:27','2020-10-02 12:48:27'),(3,'petro','petro','pp@gmail.com','$2a$08$vmCoLi4rs8kURHKnphvae.KuvpIp3gnJdClQ47DUBCIRdRSylXQ/S','2020-10-02 12:52:19','2020-10-02 12:52:19'),(4,'iryna','iryna','ira@gmail.com','$2a$08$ry2nHaw4vDRuHRiLwkx34usmYJDUQctEVE/L0IjM0UPNxdUjpSn9u','2020-10-02 12:52:39','2020-10-02 12:52:39'),(5,'oleh','oleh','oo@gmail.com','$2a$08$L2KRrCwN6Ykj4WLqNrsDFuZDr/CzVtLijaKrNLW5Weiaq0jyCqCji','2020-10-05 07:00:24','2020-10-05 07:00:24');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -108,4 +108,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-02 15:53:08
+-- Dump completed on 2020-10-05 12:46:03
