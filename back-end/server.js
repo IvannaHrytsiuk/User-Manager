@@ -73,3 +73,14 @@ app.delete('/users/:id', (req, res)=>{
       }
   })
 });
+
+app.post('/users', (req, res)=>{
+  let user = req.body;
+  mysqlConnection.query( `UPDATE users SET name = ?, username = ?, email=?, updatedAt= NOW()  WHERE id = ?`, [user.name, user.username, user.email, user.id], (err, rows, fields)=>{
+      if(!err){
+          res.send({status:'Updated!'});
+      } else{
+          console.log(err);
+      }
+  })
+});

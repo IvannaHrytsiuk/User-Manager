@@ -47,6 +47,11 @@ export class UsersComponent implements OnInit {
   modalRef2: BsModalRef;
   modalRef3: BsModalRef;
   removeuser:Users;
+  edituser:Users;
+
+  editName:string = '';
+  edituserName:string = '';
+  editEmail:string = '';
   constructor( private usersServices: UsersService,
     private modalService: BsModalService,
     private notifyService : NotificationService){ }
@@ -133,8 +138,29 @@ export class UsersComponent implements OnInit {
   showToasterError(){
     this.notifyService.showError("Server not working. Please, try again later.")
   }
-  openModalEdit(edit: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(edit);
+  openModalEdit(edit: TemplateRef<any>, user:Users) {
+    this.modalRef2 = this.modalService.show(edit);
+    this.edituser = user;
+    this.editName = user.name;
+    this.edituserName = user.username;
+    this.editEmail = user.email;
+  }
+
+  saveEdit(){
+    this.edituser.name = this.editName;
+    this.edituser.username = this.edituserName;
+    this.edituser.email = this.editEmail;
+
+    this.usersServices.updateJSONUser(this.edituser).subscribe(
+      () => {
+        this.notifyService.showSuccess("User successfully updated :)")
+        this.getUsers();
+      }, 
+      err => {
+        this.showToasterError();
+      }
+    )
+    this.modalRef2.hide();
   }
   
   openModalDel(del: TemplateRef<any>, user:Users) {
@@ -155,5 +181,7 @@ export class UsersComponent implements OnInit {
     this.removeuser = null;
     this.modalRef3.hide();
   }
+
+
 }
 

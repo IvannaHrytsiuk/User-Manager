@@ -168,6 +168,7 @@
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Username</th>
                     <th scope="col">Email</th>
                     <th scope="col">Created at</th>
                     <th scope="col">Updated at</th>
@@ -179,19 +180,35 @@
                   <tr  *ngFor="let user of users">
                     <th>{{user.id}}</th>
                     <td>{{user.name}}</td>
+                    <td>{{user.username}}</td>
                     <td>{{user.email}}</td>
                     <td>{{user.createdAt | date:'yyyy/LL/dd'}}</td>
                     <td>{{user.updatedAt | date:'yyyy/LL/dd'}}</td>
-                    <td *ngIf="ifAdmin"><button class="btn btn-warning" (click)="openModalEdit(edit)">Edit</button></td>
+                    <td *ngIf="ifAdmin"><button class="btn btn-warning" (click)="openModalEdit(edit, user)">Edit</button></td>
                     <ng-template #edit>
                       <div class="modal-header">
-                        <h4 class="modal-title pull-left">Edit user </h4>
-                        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                        <h4 class="modal-title pull-left">Edit </h4>
+                        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef2.hide()">
                           <span aria-hidden="true">&times;</span>
                         </button>
                       </div>
                       <div class="modal-body">
-                        This is a modal.
+                        <div class="form-group">
+                          <label for="name1">Name:</label>
+                          <input type="text" class="form-control" id="name1" [(ngModel)]="editName" name="editName">
+                        </div>
+                        <div class="form-group">
+                          <label for="usname1">Username:</label>
+                          <input type="text" class="form-control" id="usname1" [(ngModel)]="edituserName" name="edituserName">
+                        </div>
+                        <div class="form-group">
+                          <label for="email1">Email:</label>
+                          <input type="email" class="form-control" id="email1" [(ngModel)]="editEmail" name="editEmail">
+                        </div>
+                        <div>
+                          <button class="btn btn-light" (click)="modalRef2.hide()">Cancel</button>
+                          <button class="btn btn-dark" (click)="saveEdit()">Save</button>
+                        </div>
                       </div>
                     </ng-template>
                     <td *ngIf="ifAdmin"><button class="btn btn-danger" (click)="openModalDel(del, user)">Delete</button></td>

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { UserPost } from '../interfaces/userShort.interface';
 import { UserP } from '../models/userShort.interface';
 import { map } from 'rxjs/operators';
+import { UserEd } from '../interfaces/user.ed.';
 
 
 @Injectable({
@@ -31,5 +32,8 @@ export class UsersService {
   }
   deleteJSONUser(id: number):Observable<Array<Users>>{
     return this.http.delete<Array<Users>>(`${this.url}/${id}`);
+  }
+  updateJSONUser(user: UserEd):Observable<Array<UserEd>>{
+    return this.http.post<Array<UserEd>>(this.url, user);
   }
 }
