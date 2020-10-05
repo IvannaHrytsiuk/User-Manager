@@ -15,21 +15,43 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 export class UsersComponent implements OnInit {
   users:Array<Users> = [];
   modalRef: BsModalRef;
-  newName:string  = '';
-  newEmail:string = '';
-  newPassword:string = '';
-  newUserForm:NgForm;
-  newUser:UserP = {
+  newNameAdm:string  = '';
+  newUserNameAdm:string  = '';
+  newUserNameUser:string  = '';
+  newEmailAdm:string = '';
+  newPasswordAdm:string = '';
+  newNameUser:string  = '';
+  newUserUs:string  = '';
+  role:string  = '';
+  newEmailUser:string = '';
+  newPasswordUser:string = '';
+  newUserAdmForm:NgForm;
+  newUserUserForm:NgForm;
+  newUserAdm:UserP = {
     name:'',
+    username:'',
     email:'',
-    password:''
+    password:'',
+    roles:[]
   }
+  newUserUser:UserP = {
+    name:'',
+    username:'',
+    email:'',
+    password:'',
+    roles:["user"]
+  }
+  ifAdmin;
+  ifUser;
+
   constructor( private usersServices: UsersService,
     private modalService: BsModalService,
     private notifyService : NotificationService){ }
 
   ngOnInit(): void {
     this.getUsers();
+    this.ifAdmin = localStorage.getItem("admin");
+    this.ifUser = localStorage.getItem("user");
   }
   private getUsers(): void{
     this.usersServices.getJSONUsers().subscribe(
@@ -55,23 +77,51 @@ export class UsersComponent implements OnInit {
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
-  addUser():void{
-    this.usersServices.addJSONUser(this.newUser).subscribe(
-      () => {
-        this.showToasterSuccess();
-        this.getUsers();
-      },
-      err =>{
-        this.showToasterError();
-      }
-    )
-      this.resetNewUserForm();
+  deleteStorage(){
+    localStorage.clear();
   }
-  resetNewUserForm():void{
-    this.newUser = {
+  addUser():void{
+    if(this.ifAdmin){
+      this.newUserAdm.roles.push(this.role);
+      this.usersServices.addJSONUser(this.newUserAdm).subscribe(
+        () => {
+          this.showToasterSuccess();
+          this.getUsers();
+        },
+        err =>{
+          console.log(err)
+          this.showToasterError();
+        }
+      )
+        this.resetNewUserForm();
+    } else{
+      this.usersServices.addJSONUser(this.newUserUser).subscribe(
+        () => {
+          this.showToasterSuccess();
+          this.getUsers();
+        },
+        err =>{
+          console.log(err)
+          this.showToasterError();
+        }
+      )
+        this.resetNewUserForm();
+    }    
+  }
+  resetNewUserForm(){
+    this.newUserAdm = {
       name:'',
+      username:'',
       email:'',
-      password:''
+      password:'',
+      roles:[]
+    }
+    this.newUserUser = {
+      name:'',
+      username:'',
+      email:'',
+      password:'',
+      roles:["user"]
     }
   }
   showToasterSuccess(){
@@ -80,5 +130,6 @@ export class UsersComponent implements OnInit {
   showToasterError(){
     this.notifyService.showError("Server not working. Please, try again later.")
   }
+  
 }
 

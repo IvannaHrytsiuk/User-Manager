@@ -7,7 +7,8 @@ const Op = db.Sequelize.Op;
  
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
- 
+
+
 exports.signup = (req, res) => {
   console.log("Processing func -> SignUp");
   
@@ -25,7 +26,7 @@ exports.signup = (req, res) => {
       }
     }).then(roles => {
       user.setRoles(roles).then(() => {
-        res.send("User registered successfully!");
+        res.send({status:"User registered successfully!"});
             });
     }).catch(err => {
       res.status(500).send("Error -> " + err);
@@ -40,7 +41,7 @@ exports.signin = (req, res) => {
   
   User.findOne({
     where: {
-      username: req.body.username
+      email: req.body.email
     }
   }).then(user => {
     if (!user) {
@@ -110,4 +111,3 @@ exports.adminBoard = (req, res) => {
     });
   })
 }
- 

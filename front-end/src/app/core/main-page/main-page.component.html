@@ -1,6 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-4">
+          <h2>Welcome, {{welcome | uppercase}}</h2>
             <ul class="nav flex-column">
                 <li class="nav-item">
                   <a class="nav-link active" [routerLink] = "['/dashboard']">Dashboard </a>
@@ -12,7 +13,7 @@
                   <a class="nav-link" [routerLink] = "['/users']">Users</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" [routerLink] = "['/login']" style="color:black">Log out</a>
+                  <a class="nav-link" [routerLink] = "['/login']" (click)="deleteStorage()" style="color:black">Log out</a>
                 </li>
               </ul>
         </div>

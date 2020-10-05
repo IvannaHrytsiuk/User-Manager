@@ -13,7 +13,7 @@
                   <a class="nav-link" [routerLink] = "['/users']">Users</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" [routerLink] = "['/login']" style="color:black">Log out</a>
+                  <a class="nav-link" [routerLink] = "['/login']" (click)="deleteStorage()" style="color:black">Log out</a>
                 </li>
               </ul>
         </div>
@@ -28,27 +28,40 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <form #newUserForm = 'ngForm' (ngSubmit) = addUser()>
+                <form #newUserAdmForm = 'ngForm' (ngSubmit) = addUser() *ngIf="ifAdmin">
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Name:</label>
                             <input type="text" 
                                 class="form-control"  
-                                [(ngModel)]="newUser.name" 
+                                [(ngModel)]="newUserAdm.name" 
                                 required 
                                 #name='ngModel'
                                 pattern="^[a-zA-Z]{1,23}$"
-                                name="newName">
+                                name="newNameAdm">
                         </div>
                         <div *ngIf="name.invalid && name.touched">
                             <small> Name invalid</small>
                         </div>
                         <div class="form-group">
+                            <label>Username:</label>
+                            <input type="text" 
+                                class="form-control"  
+                                [(ngModel)]="newUserAdm.username" 
+                                required 
+                                #name='ngModel'
+                                pattern="^[a-zA-Z]{1,23}$"
+                                name="newUserNameAdm">
+                        </div>
+                        <div *ngIf="newUserNameAdm.invalid && newUserNameAdm.touched">
+                            <small> Username invalid</small>
+                        </div>
+                        <div class="form-group">
                             <label>Email:</label>
                             <input type="email" 
                                 class="form-control" 
-                                name="newEmail" 
-                                [(ngModel)]="newUser.email"
+                                name="newEmailAdm" 
+                                [(ngModel)]="newUserAdm.email"
                                 pattern="[^@]+@[^\.]+\..+"
                                 #email='ngModel'
                                 required>
@@ -60,8 +73,80 @@
                             <label>Password:</label>
                             <input type="password" 
                                 class="form-control" 
-                                name="newPassword" 
-                                [(ngModel)]="newUser.password"
+                                name="newPasswordAdm" 
+                                [(ngModel)]="newUserAdm.password"
+                                required
+                                minlength="5"
+                                #password='ngModel'>
+                        </div>
+                        <div *ngIf="password.invalid && password.touched">
+                            <small> Password invalid</small>
+                        </div>
+                        <div>
+                          <div class="custom-control custom-radio">
+                            <input type="radio" id="customRadio1" value = 'user' name='role' [(ngModel)]="role" class="custom-control-input">
+                            <label class="custom-control-label" for="customRadio1">User</label>
+                          </div>
+                          <div class="custom-control custom-radio">
+                            <input type="radio" id="customRadio2" value = 'admin' name='role' [(ngModel)]="role" name="customRadio" class="custom-control-input">
+                            <label class="custom-control-label" for="customRadio2">Admin</label>
+                          </div>
+                        </div>
+                        <div class="newBtn">
+                            <button type="submit" 
+                                [disabled] = 'newUserAdmForm.invalid' 
+                                class="btn btn-warning"
+                                (click)="modalRef.hide()">Add</button>
+                        </div>
+                    </div>
+                </form>
+                <form #newUserUserForm = 'ngForm' *ngIf="ifUser" (ngSubmit) = addUser()>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Name:</label>
+                            <input type="text" 
+                                class="form-control"  
+                                [(ngModel)]="newUserUser.name" 
+                                required 
+                                #name='ngModel'
+                                pattern="^[a-zA-Z]{1,23}$"
+                                name="newNameUser">
+                        </div>
+                        <div *ngIf="name.invalid && name.touched">
+                            <small> Name invalid</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Username:</label>
+                            <input type="text" 
+                                class="form-control"  
+                                [(ngModel)]="newUserUser.username" 
+                                required 
+                                #name='ngModel'
+                                pattern="^[a-zA-Z]{1,23}$"
+                                name="newUserNameUser">
+                        </div>
+                        <div *ngIf="newUserNameUser.invalid && newUserNameUser.touched">
+                            <small> Username invalid</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Email:</label>
+                            <input type="email" 
+                                class="form-control" 
+                                name="newEmailUser" 
+                                [(ngModel)]="newUserUser.email"
+                                pattern="[^@]+@[^\.]+\..+"
+                                #email='ngModel'
+                                required>
+                        </div>
+                        <div *ngIf="email.invalid && email.touched">
+                            <small> Email invalid</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Password:</label>
+                            <input type="password" 
+                                class="form-control" 
+                                name="newPasswordUser" 
+                                [(ngModel)]="newUserUser.password"
                                 required
                                 minlength="5"
                                 #password='ngModel'>
@@ -71,7 +156,7 @@
                         </div>
                         <div class="newBtn">
                             <button type="submit" 
-                                [disabled] = 'newUserForm.invalid' 
+                                [disabled] = 'newUserUserForm.invalid' 
                                 class="btn btn-warning"
                                 (click)="modalRef.hide()">Add</button>
                         </div>
@@ -86,6 +171,8 @@
                     <th scope="col">Email</th>
                     <th scope="col">Created at</th>
                     <th scope="col">Updated at</th>
+                    <th *ngIf="ifAdmin" scope="col">Edit</th>
+                    <th *ngIf="ifAdmin" scope="col">Delete</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -93,8 +180,10 @@
                     <th>{{user.id}}</th>
                     <td>{{user.name}}</td>
                     <td>{{user.email}}</td>
-                    <td>{{user.created_at | date:'yyyy/LL/dd'}}</td>
-                    <td>{{user.updated_at | date:'yyyy/LL/dd'}}</td>
+                    <td>{{user.createdAt | date:'yyyy/LL/dd'}}</td>
+                    <td>{{user.updatedAt | date:'yyyy/LL/dd'}}</td>
+                    <td *ngIf="ifAdmin"><button class="btn btn-warning">Edit</button></td>
+                    <td *ngIf="ifAdmin"><button class="btn btn-danger">Delete</button></td>
                   </tr>
                 </tbody>
             </table>

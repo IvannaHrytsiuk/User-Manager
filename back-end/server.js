@@ -7,13 +7,7 @@ require('./app/router/router.js')(app);
  
 const db = require('./app/config/db.config.js');
  
-const Role = db.role;
-  
-db.sequelize.sync({force: true}).then(() => {
-  console.log('Drop and Resync with { force: true }');
-  initial();
-});
- 
+const Role = db.role; 
  
 var server = app.listen(8080, function () {
  
@@ -35,3 +29,47 @@ function initial(){
     name: "ADMIN"
   });
 }
+const mysql = require('mysql2');
+
+const mysqlConnection = mysql.createConnection({
+    host:'localhost',
+    user:'root',
+    password:'123qaz',
+    database:'testdb',
+    multipleStatements:true
+});
+
+mysqlConnection.connect( function(error){
+    if (error) throw error;
+    console.log('Connected');
+});
+
+app.get('/users', (req, res)=>{
+  mysqlConnection.query('SELECT u.* FROM users u left join user_roles ur on u.id = ur.userId where ur.roleId = 1;', (err, rows, filed)=>{
+      if(!err){
+          res.send(rows);
+      } else{
+          console.log(err);
+      }
+  })
+});
+
+app.get('/users/:id', (req, res)=>{
+  mysqlConnection.query('SELECT * FROM users WHERE id = ?',[req.params.id], (err, rows, filed)=>{
+      if(!err){
+          res.send(rows);
+      } else{
+          console.log(err);
+      }
+  })
+});
+
+app.delete('/users/:id', (req, res)=>{
+  mysqlConnection.query('DELETE FROM users WHERE id = ?',[req.params.id], (err, rows, fields)=>{
+      if(!err){
+          res.send('Deleted!');
+      } else{
+          console.log(err);
+      }
+  })
+});
