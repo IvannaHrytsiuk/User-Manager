@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LoginUser } from '../../interfaces/login.interface';
 import { HttpClient } from '@angular/common/http';
-import { Access } from '../../interfaces/access';
 
 @Injectable({
   providedIn: 'root'
