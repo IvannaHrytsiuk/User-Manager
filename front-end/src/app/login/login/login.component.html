@@ -1,15 +1,35 @@
 <div class="container">
     <div class="form-wrapper">
-        <form>
+        <form #loginForm = 'ngForm' (ngSubmit) = check()>
             <div class="form-group">
               <label for="exampleInputEmail1">Email address</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+              <input type="email" 
+                class="form-control" 
+                id="exampleInputEmail1" 
+                [(ngModel)]="user.email" 
+                name = 'email'
+                pattern="[^@]+@[^\.]+\..+"
+                #email='ngModel'
+                required>
+            </div>
+            <div *ngIf="email.invalid && email.touched">
+              <small> Email invalid</small>
             </div>
             <div class="form-group">
               <label for="exampleInputPassword1">Password</label>
-              <input type="password" class="form-control" id="exampleInputPassword1">
+              <input type="password" 
+                class="form-control" 
+                id="exampleInputPassword1" 
+                [(ngModel)]="user.password" 
+                name="password"
+                required
+                minlength="5"
+                #password='ngModel'>
             </div>
-            <a [routerLink] = "['/dashboard']"><button class="btn btn-primary">Sing in</button></a>
+            <div *ngIf="password.invalid && password.touched">
+              <small> Password invalid</small>
+            </div>
+            <a><button type="submit" [disabled] = 'loginForm.invalid' class="btn btn-primary">Sing in</button></a>
         </form>
     </div>
 </div>
