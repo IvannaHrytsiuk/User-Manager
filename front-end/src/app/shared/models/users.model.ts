@@ -7,7 +7,7 @@ export class User implements Users{
         public username:string,
         public email:string,
         public password:string,
-        public created_at:Date,
-        public updated_at:Date
+        public createdAt:Date,
+        public updatedAt:Date
     ){}
 }

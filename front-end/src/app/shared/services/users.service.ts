@@ -36,4 +36,7 @@ export class UsersService {
   updateJSONUser(user: UserEd):Observable<Array<UserEd>>{
     return this.http.post<Array<UserEd>>(this.url, user);
   }
+  get1User(id: number):Observable<Array<Users>>{
+    return this.http.get<Array<Users>>(`${this.url}/${id}`);
+  }
 }
