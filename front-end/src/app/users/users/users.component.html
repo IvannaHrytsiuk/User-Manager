@@ -177,9 +177,9 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr  *ngFor="let user of users">
+                  <tr  *ngFor="let user of users" >
                     <th>{{user.id}}</th>
-                    <td>{{user.name}}</td>
+                    <td><a [routerLink]="[ '/user/', user.id ]">{{user.name}}</a></td>
                     <td>{{user.username}}</td>
                     <td>{{user.email}}</td>
                     <td>{{user.createdAt | date:'yyyy/LL/dd'}}</td>
