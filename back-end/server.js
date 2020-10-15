@@ -8,7 +8,10 @@ require('./app/router/router.js')(app);
 const db = require('./app/config/db.config.js');
  
 const Role = db.role; 
- 
+// db.sequelize.sync({force: true}).then(() => {
+//   console.log('Drop and Resync with { force: true }');
+//   initial();
+// });
 var server = app.listen(8080, function () {
  
   var host = server.address().address
@@ -16,19 +19,19 @@ var server = app.listen(8080, function () {
  
   console.log("App listening at http://%s:%s", host, port)
 })
+
  
- 
-function initial(){
-  Role.create({
-    id: 1,
-    name: "USER"
-  });
+// function initial(){
+//   Role.create({
+//     id: 1,
+//     name: "USER"
+//   });
   
-  Role.create({
-    id: 2,
-    name: "ADMIN"
-  });
-}
+//   Role.create({
+//     id: 2,
+//     name: "ADMIN"
+//   });
+// }
 const mysql = require('mysql2');
 
 const mysqlConnection = mysql.createConnection({
@@ -76,7 +79,7 @@ app.delete('/users/:id', (req, res)=>{
 
 app.post('/users', (req, res)=>{
   let user = req.body;
-  mysqlConnection.query( `UPDATE users SET name = ?, username = ?, email=?, updatedAt= NOW()  WHERE id = ?`, [user.name, user.username, user.email, user.id], (err, rows, fields)=>{
+  mysqlConnection.query( `UPDATE users SET name = ?, username = ?, email=?, entitlements=?, updatedAt= NOW()  WHERE id = ?`, [user.name, user.username, user.email, user.entitlements, user.id], (err, rows, fields)=>{
       if(!err){
           res.send({status:'Updated!'});
       } else{

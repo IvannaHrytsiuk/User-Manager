@@ -84,12 +84,38 @@
                         </div>
                         <div>
                           <div class="custom-control custom-radio">
-                            <input type="radio" id="customRadio1" value = 'user' name='role' [(ngModel)]="role" class="custom-control-input">
+                            <input type="radio" id="customRadio1" value = 'user' name='role' [(ngModel)]="role" class="custom-control-input" (change) ='getRole()'>
                             <label class="custom-control-label" for="customRadio1">User</label>
                           </div>
                           <div class="custom-control custom-radio">
-                            <input type="radio" id="customRadio2" value = 'admin' name='role' [(ngModel)]="role" name="customRadio" class="custom-control-input">
+                            <input type="radio" id="customRadio2" value = 'admin' name='role' [(ngModel)]="role" name="customRadio" (change) ='getRole1()' class="custom-control-input">
                             <label class="custom-control-label" for="customRadio2">Admin</label>
+                          </div>
+                        </div>
+                        <div *ngIf="ifselectUser">
+                          <div  class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="1" (change)="selected('can_view_users')">
+                            <label class="form-check-label" for="1">can_view_users</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="2" (change)="selected('can_edit_users')">
+                            <label class="form-check-label" for="2">can_edit_users</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="3" (change)="selected('can_delete_users')">
+                            <label class="form-check-label" for="3">can_delete_users</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="4" (change)="selected('can_view_details')">
+                            <label class="form-check-label" for="4">can_view_details</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="5" (change)="selected('can_view_details_full')">
+                            <label class="form-check-label" for="5">can_view_details_full</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="6" (change)="selected('can_edit_users_full')">
+                            <label class="form-check-label" for="6">can_edit_users_full</label>
                           </div>
                         </div>
                         <div class="newBtn">
@@ -163,55 +189,20 @@
                     </div>
                 </form>
               </ng-template>
-            <table class="table">
+            <table class="table" *ngIf="ifAdmin || ifCanViewUsers">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Username</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Created at</th>
-                    <th scope="col">Updated at</th>
-                    <th *ngIf="ifAdmin" scope="col">Edit</th>
-                    <th *ngIf="ifAdmin" scope="col">Delete</th>
+                    <th *ngIf="ifAdmin || ifCanDelete" scope="col">Delete</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr  *ngFor="let user of users" >
                     <th>{{user.id}}</th>
-                    <td><a [routerLink]="[ '/user/', user.id ]">{{user.name}}</a></td>
-                    <td>{{user.username}}</td>
-                    <td>{{user.email}}</td>
-                    <td>{{user.createdAt | date:'yyyy/LL/dd'}}</td>
-                    <td>{{user.updatedAt | date:'yyyy/LL/dd'}}</td>
-                    <td *ngIf="ifAdmin"><button class="btn btn-warning" (click)="openModalEdit(edit, user)">Edit</button></td>
-                    <ng-template #edit>
-                      <div class="modal-header">
-                        <h4 class="modal-title pull-left">Edit </h4>
-                        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef2.hide()">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        <div class="form-group">
-                          <label for="name1">Name:</label>
-                          <input type="text" class="form-control" id="name1" [(ngModel)]="editName" name="editName">
-                        </div>
-                        <div class="form-group">
-                          <label for="usname1">Username:</label>
-                          <input type="text" class="form-control" id="usname1" [(ngModel)]="edituserName" name="edituserName">
-                        </div>
-                        <div class="form-group">
-                          <label for="email1">Email:</label>
-                          <input type="email" readonly class="form-control" id="email1" [(ngModel)]="editEmail" name="editEmail">
-                        </div>
-                        <div>
-                          <button class="btn btn-light" (click)="modalRef2.hide()">Cancel</button>
-                          <button class="btn btn-dark" (click)="saveEdit()">Save</button>
-                        </div>
-                      </div>
-                    </ng-template>
-                    <td *ngIf="ifAdmin"><button class="btn btn-danger" (click)="openModalDel(del, user)">Delete</button></td>
+                    <td *ngIf="ifAdmin || ifCanViewDetails"><a [routerLink]="[ '/user/', user.id ]">{{user.name}}</a></td>
+                    <td *ngIf="ifUser && !ifCanViewDetails">{{user.name}}</td>
+                    <td *ngIf="ifAdmin || ifCanDelete"><button class="btn btn-danger" (click)="openModalDel(del, user)">Delete</button></td>
                     <ng-template #del>
                       <div class="modal-header">
                         <h4 class="modal-title pull-left" style="text-align: center;">Are you sure?</h4>

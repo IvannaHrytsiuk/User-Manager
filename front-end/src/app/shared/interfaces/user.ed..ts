@@ -3,4 +3,5 @@ export interface UserEd{
     name:string;
     username:string;
     email:string;
+    entitlements: Array<string>;
 }

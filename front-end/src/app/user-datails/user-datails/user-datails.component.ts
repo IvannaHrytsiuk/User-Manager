@@ -20,11 +20,14 @@ export class UserDatailsComponent implements OnInit {
   edituser:Users;
   editName:string = '';
   edituserName:string = '';
+  edituserent:string = '';
   editEmail:string = '';
   ifAdmin;
   ifUser;
   ifEditUser;
   ifCanEditUser;
+  arrEnt;
+  arr = [];
 
   constructor(private userService: UsersService, 
     private route: ActivatedRoute,
@@ -37,22 +40,23 @@ export class UserDatailsComponent implements OnInit {
       this.userService.get1User(id).subscribe(
         data =>{
           this.viewUser = data[0];
+          this.arrEnt = this.viewUser.entitlements;
+          this.arrEnt = this.arrEnt.replace('[', '').replace(']','').split(',')
+          console.log()
         }
       )
     this.ifAdmin = localStorage.getItem("admin");
     this.ifUser = localStorage.getItem("user");
     this.ifEditUser = localStorage.getItem('user');
     this.ifEditUser = JSON.parse(this.ifEditUser)
-    if(this.ifEditUser.user.roles[0].user_roles.userId == id){
-      this.ifCanEditUser = true;
-    } else{
-      this.ifCanEditUser = false;
+    if(this.ifUser){
+      if(this.ifEditUser.user.roles[0].user_roles.userId == id){
+        this.ifCanEditUser = true;
+      } else{
+        this.ifCanEditUser = false;
+      }
     }
-    console.log(this.ifEditUser.user.roles[0].user_roles.userId)
-    console.log(id)
   }
-
-  
 
   openModalEdit(edit: TemplateRef<any>) {
     console.log(this.viewUser)
@@ -61,25 +65,44 @@ export class UserDatailsComponent implements OnInit {
     this.editName =  this.viewUser.name;
     this.edituserName =  this.viewUser.username;
     this.editEmail =  this.viewUser.email;
+    this.edituserent =  this.viewUser.entitlements.toString().replace('[', '').replace(']','');
   }
   deleteStorage(){
     localStorage.clear();
   }
   saveEdit(){
-    this.edituser.name = this.editName;
-    this.edituser.username = this.edituserName;
-    this.edituser.email = this.editEmail;
-
-    this.userService.updateJSONUser(this.edituser).subscribe(
-      () => {
-        this.notifyService.showSuccess("User successfully updated :)")
-        this.ngOnInit();
-      }, 
-      err => {
-        this.showToasterError();
-      }
-    )
-    this.modalRef.hide();
+    if(this.ifAdmin){
+      this.edituser.name = this.editName;
+      this.edituser.username = this.edituserName;
+      this.edituser.email = this.editEmail;
+      this.edituser.entitlements = this.edituserent.split(',');
+  
+      this.userService.updateJSONUser(this.edituser).subscribe(
+        () => {
+          this.notifyService.showSuccess("User successfully updated :)")
+          this.ngOnInit();
+        }, 
+        err => {
+          this.showToasterError();
+        }
+      )
+      this.modalRef.hide();
+    } else{
+      this.edituser.name = this.editName;
+      this.edituser.username = this.edituserName;
+      this.edituser.email = this.editEmail;  
+      this.userService.updateJSONUser(this.edituser).subscribe(
+        () => {
+          this.notifyService.showSuccess("User successfully updated :)")
+          this.ngOnInit();
+        }, 
+        err => {
+          this.showToasterError();
+        }
+      )
+      this.modalRef.hide();
+    }
+    
   }
   showSuccess(){
     this.notifyService.showSuccess("User successfully updated :)")

@@ -7,6 +7,7 @@ export class User implements Users{
         public username:string,
         public email:string,
         public password:string,
+        public entitlements:Array<string>,
         public createdAt:Date,
         public updatedAt:Date
     ){}

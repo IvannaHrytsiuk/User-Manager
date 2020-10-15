@@ -24,6 +24,8 @@ export class UsersComponent implements OnInit {
   newNameUser:string  = '';
   newUserUs:string  = '';
   role:string  = '';
+  entitlements:string  = '';
+  arr = [];
   newEmailUser:string = '';
   newPasswordUser:string = '';
   newUserAdmForm:NgForm;
@@ -33,6 +35,7 @@ export class UsersComponent implements OnInit {
     username:'',
     email:'',
     password:'',
+    entitlements:[],
     roles:[]
   }
   newUserUser:UserP = {
@@ -40,18 +43,19 @@ export class UsersComponent implements OnInit {
     username:'',
     email:'',
     password:'',
+    entitlements:[],
     roles:["user"]
   }
   ifAdmin;
   ifUser;
+  ifCanDelete;
+  ifCanViewUsers;
+  ifCanViewDetails;
+  ifselectUser:boolean = false;
   modalRef2: BsModalRef;
   modalRef3: BsModalRef;
   removeuser:Users;
-  edituser:Users;
 
-  editName:string = '';
-  edituserName:string = '';
-  editEmail:string = '';
   constructor( private usersServices: UsersService,
     private modalService: BsModalService,
     private notifyService : NotificationService){ }
@@ -60,6 +64,25 @@ export class UsersComponent implements OnInit {
     this.getUsers();
     this.ifAdmin = localStorage.getItem("admin");
     this.ifUser = localStorage.getItem("user");
+    this.ifUser = JSON.parse(this.ifUser);
+    this.ifAdmin = JSON.parse(this.ifAdmin);
+    if(this.ifUser != null){
+      if(this.ifUser.user.entitlements.includes("can_delete_users")){
+        this.ifCanDelete = true;
+      } else{
+        this.ifCanDelete = false;
+      }
+      if(this.ifUser.user.entitlements.includes("can_view_users")){
+        this.ifCanViewUsers = true;
+      } else{
+        this.ifCanViewUsers = false;
+      }
+      if(this.ifUser.user.entitlements.includes("can_view_details")){
+        this.ifCanViewDetails = true;
+      } else{
+        this.ifCanViewDetails = false;
+      }
+    }
   }
   private getUsers(): void{
     this.usersServices.getJSONUsers().subscribe(
@@ -91,6 +114,11 @@ export class UsersComponent implements OnInit {
   addUser():void{
     if(this.ifAdmin){
       this.newUserAdm.roles.push(this.role);
+      if(this.role == 'admin'){
+        this.newUserAdm.entitlements = ["can_view_users","can_edit_users","can_delete_users","can_view_details","can_view_details_full","can_edit_users_full"];
+      } else{
+        this.newUserAdm.entitlements = this.arr;
+      }
       this.usersServices.addJSONUser(this.newUserAdm).subscribe(
         () => {
           this.showToasterSuccess();
@@ -122,6 +150,7 @@ export class UsersComponent implements OnInit {
       username:'',
       email:'',
       password:'',
+      entitlements:[],
       roles:[]
     }
     this.newUserUser = {
@@ -129,6 +158,7 @@ export class UsersComponent implements OnInit {
       username:'',
       email:'',
       password:'',
+      entitlements:[],
       roles:["user"]
     }
   }
@@ -137,30 +167,6 @@ export class UsersComponent implements OnInit {
   }
   showToasterError(){
     this.notifyService.showError("Server not working. Please, try again later.")
-  }
-  openModalEdit(edit: TemplateRef<any>, user:Users) {
-    this.modalRef2 = this.modalService.show(edit);
-    this.edituser = user;
-    this.editName = user.name;
-    this.edituserName = user.username;
-    this.editEmail = user.email;
-  }
-
-  saveEdit(){
-    this.edituser.name = this.editName;
-    this.edituser.username = this.edituserName;
-    this.edituser.email = this.editEmail;
-
-    this.usersServices.updateJSONUser(this.edituser).subscribe(
-      () => {
-        this.notifyService.showSuccess("User successfully updated :)")
-        this.getUsers();
-      }, 
-      err => {
-        this.showToasterError();
-      }
-    )
-    this.modalRef2.hide();
   }
   
   openModalDel(del: TemplateRef<any>, user:Users) {
@@ -181,7 +187,15 @@ export class UsersComponent implements OnInit {
     this.removeuser = null;
     this.modalRef3.hide();
   }
-
-
+  selected(val){
+    this.arr.push(val);
+  }
+  getRole(){
+    this.ifselectUser = true;
+  }
+  getRole1(){
+    this.ifselectUser = false;
+  }
 }
+
 

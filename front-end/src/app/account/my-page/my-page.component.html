@@ -1,1 +1,40 @@
-<p>my-page works!</p>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link active" [routerLink] = "['/dashboard']">Dashboard </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" [routerLink] = "['/my-page']">My page</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" [routerLink] = "['/users']">Users</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" [routerLink] = "['/login']" (click)="deleteStorage()" style="color:black">Log out</a>
+                </li>
+              </ul>
+        </div>
+        <div class="col-md-8">
+          <div class="flex">
+            <div class="userDetails">
+              <p>Name: <b>{{viewUser?.name}}</b></p>
+              <p>Username: <b>{{viewUser?.username}}</b></p>
+              <p>Email: <b>{{viewUser?.email}}</b></p>
+              <p>Created at: <b>{{viewUser?.createdAt | date:'yyyy/LL/dd'}}</b></p>
+              <p>Updated at: <b>{{viewUser?.updatedAt | date:'yyyy/LL/dd'}}</b></p>
+          </div>
+          <div class="userDetailsEntet">
+           <h3>I can:</h3>
+            <ul>
+              <li *ngFor="let ent of arrEnt">{{ent}}</li>
+            </ul>
+          </div>
+          </div>
+           
+        </div>
+    </div>
+</div>
+

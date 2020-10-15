@@ -7,6 +7,7 @@ export class UserP implements UserPost{
         public username:string,
         public email:string,
         public password:string,
+        public entitlements:Array<string>,
         public roles:Array<any>,
     ){}
 }

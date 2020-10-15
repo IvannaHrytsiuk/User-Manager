@@ -16,7 +16,8 @@ exports.signup = (req, res) => {
     name: req.body.name,
     username: req.body.username,
     email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 8)
+    password: bcrypt.hashSync(req.body.password, 8),
+    entitlements: JSON.stringify(req.body.entitlements)
   }).then(user => {
     Role.findAll({
       where: {
@@ -67,7 +68,7 @@ exports.signin = (req, res) => {
 exports.userContent = (req, res) => {
   User.findOne({
     where: {id: req.userId},
-    attributes: ['name', 'username', 'email'],
+    attributes: ['name', 'username', 'email', 'entitlements'],
     include: [{
       model: Role,
       attributes: ['id', 'name'],
@@ -91,7 +92,7 @@ exports.userContent = (req, res) => {
 exports.adminBoard = (req, res) => {
   User.findOne({
     where: {id: req.userId},
-    attributes: ['name', 'username', 'email'],
+    attributes: ['name', 'username', 'email', 'entitlements'],
     include: [{
       model: Role,
       attributes: ['id', 'name'],

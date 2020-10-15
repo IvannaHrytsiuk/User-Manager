@@ -4,6 +4,7 @@ export interface Users{
     username:string;
     email:string;
     password:string;
+    entitlements:Array<string>;
     createdAt:Date;
     updatedAt:Date;
 }
