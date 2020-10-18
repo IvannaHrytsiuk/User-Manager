@@ -5,6 +5,7 @@ import { Users } from 'src/app/shared/interfaces/users.interface';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { UsersService } from 'src/app/shared/services/users.service';
 import {NgForm} from '@angular/forms';
+import { DeactGuard } from 'src/app/shared/guard/deact.guard';
 
 
 @Component({
@@ -26,13 +27,15 @@ export class UserDatailsComponent implements OnInit {
   ifUser;
   ifEditUser;
   ifCanEditUser;
+  ifCanEditUsers;
   arrEnt;
   arr = [];
 
   constructor(private userService: UsersService, 
     private route: ActivatedRoute,
     private modalService: BsModalService,
-    private notifyService : NotificationService
+    private notifyService : NotificationService,
+    private guarddeact: DeactGuard
     ) { }
 
   ngOnInit(): void {
@@ -56,10 +59,19 @@ export class UserDatailsComponent implements OnInit {
         this.ifCanEditUser = false;
       }
     }
+    if(this.ifUser){
+      if(this.ifEditUser.user.entitlements.includes('can_edit_users')){
+        this.ifCanEditUsers = true;
+      } else{
+        this.ifCanEditUsers = false;
+      }
+    }
   }
 
   openModalEdit(edit: TemplateRef<any>) {
-    console.log(this.viewUser)
+    this.guarddeact.confirmStatus = false;
+    console.log(this.viewUser);
+    this.guarddeact.confirmStatus = true;
     this.modalRef = this.modalService.show(edit);
     this.edituser = this.viewUser;
     this.editName =  this.viewUser.name;
@@ -102,7 +114,7 @@ export class UserDatailsComponent implements OnInit {
       )
       this.modalRef.hide();
     }
-    
+    this.guarddeact.confirmStatus = false;
   }
   showSuccess(){
     this.notifyService.showSuccess("User successfully updated :)")

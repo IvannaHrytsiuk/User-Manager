@@ -25,7 +25,7 @@
               <p>User email: <b>{{viewUser?.email}}</b></p>
               <p>User created at: <b>{{viewUser?.createdAt | date:'yyyy/LL/dd'}}</b></p>
               <p>User updated at: <b>{{viewUser?.updatedAt | date:'yyyy/LL/dd'}}</b></p>
-              <button class="btn btn-success" *ngIf="ifAdmin || ifCanEditUser" (click)="openModalEdit(edit)">Edit</button>
+              <button class="btn btn-success" *ngIf="ifAdmin || ifCanEditUser || ifCanEditUsers" (click)="openModalEdit(edit)">Edit</button>
               <ng-template #edit>
                <div class="modal-header">
                  <h4 class="modal-title pull-left">Edit </h4>

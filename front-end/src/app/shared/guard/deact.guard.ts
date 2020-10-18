@@ -7,11 +7,16 @@ import { UserDatailsComponent } from '../../user-datails/user-datails/user-datai
   providedIn: 'root'
 })
 export class DeactGuard implements CanDeactivate<UserDatailsComponent> {
+  confirmStatus:boolean = false;
   canDeactivate(
     component:UserDatailsComponent,
     currentRoute:ActivatedRouteSnapshot,
     currentState: RouterStateSnapshot,
     nextState?:RouterStateSnapshot){
-      return confirm('Are you sure?')
+      if(this.confirmStatus === true){
+        this.confirmStatus = false;
+        return confirm('Are you sure?')
+      }
+      return true;
     }
 }
