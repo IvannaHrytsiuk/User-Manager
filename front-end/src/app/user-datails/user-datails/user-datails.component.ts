@@ -21,7 +21,7 @@ export class UserDatailsComponent implements OnInit {
   edituser:Users;
   editName:string = '';
   edituserName:string = '';
-  edituserent:string = '';
+  edituserent;
   editEmail:string = '';
   ifAdmin;
   ifUser;
@@ -45,7 +45,6 @@ export class UserDatailsComponent implements OnInit {
           this.viewUser = data[0];
           this.arrEnt = this.viewUser.entitlements;
           this.arrEnt = this.arrEnt.replace('[', '').replace(']','').split(',')
-          console.log()
         }
       )
     this.ifAdmin = localStorage.getItem("admin");
@@ -70,7 +69,6 @@ export class UserDatailsComponent implements OnInit {
 
   openModalEdit(edit: TemplateRef<any>) {
     this.guarddeact.confirmStatus = false;
-    console.log(this.viewUser);
     this.guarddeact.confirmStatus = true;
     this.modalRef = this.modalService.show(edit);
     this.edituser = this.viewUser;
@@ -83,11 +81,11 @@ export class UserDatailsComponent implements OnInit {
     localStorage.clear();
   }
   saveEdit(){
-    if(this.ifAdmin){
+    if(this.ifAdmin != null){
       this.edituser.name = this.editName;
       this.edituser.username = this.edituserName;
       this.edituser.email = this.editEmail;
-      this.edituser.entitlements = this.edituserent.split(',');
+      this.edituser.entitlements = this.edituserent;
   
       this.userService.updateJSONUser(this.edituser).subscribe(
         () => {

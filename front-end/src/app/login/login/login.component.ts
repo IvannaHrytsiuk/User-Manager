@@ -35,12 +35,10 @@ export class LoginComponent implements OnInit {
           this.access = data;
           this.loginService.checkJSONBoardAdmin(this.access.accessToken).subscribe(
             data => {
-              console.log(data);
               this.admin  = data;
               if(data.user.roles[0].name === 'USER'){
                 this.loginService.checkJSONBoardUser(this.access.accessToken).subscribe(
                   data => {
-                    console.log(data);
                     this.userObj = data;
                     if(data.user.roles[0].name === 'ADMIN'){
                       return;

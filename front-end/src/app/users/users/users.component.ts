@@ -172,7 +172,6 @@ export class UsersComponent implements OnInit {
   openModalDel(del: TemplateRef<any>, user:Users) {
     this.modalRef3 = this.modalService.show(del);
     this.removeuser = user;
-    console.log(this.removeuser)
   }
   deleteUser():void{
     this.usersServices.deleteJSONUser(this.removeuser.id).subscribe(
